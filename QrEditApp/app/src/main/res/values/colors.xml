@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="gray_bg">#f1f1f1</color>
+    <color name="white">@android:color/white</color>
+    <color name="orange">#f06f15</color>
+    <color name="sell_new_bg">#00ff00</color>
+    <color name="sell_new_font">#005500</color>
+    <color name="sell_update_font">#555500</color>
+    <color name="sell_update_bg">#ffff00</color>
+    <color name="btn_enabled">#00aa00</color>
+    <color name="btn_disabled">#454545</color>
+</resources>

@@ -1,0 +1,6 @@
+0=
+1= Viewer, Can not sell
+2= Seller, Can not edit
+3= Editor, Can Sell
+4=
+5= Admin
