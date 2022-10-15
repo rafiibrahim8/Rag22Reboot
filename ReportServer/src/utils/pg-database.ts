@@ -31,10 +31,6 @@ export async function genarateSellReport(soldOnly = false) {
     }
     let query = `SELECT qr_sl, is_sold, datetime, buyer_name, buyer_phone, amount, seller, editor, edits, total_edits, epoch FROM sell_info${soldOnlyStr}ORDER BY qr_sl;`;
     let res = (await client.query(query)).rows;
-    res = res.map((row) => {
-        row.datetime = row.datetime? new Date(row.datetime).toLocaleString('en-UK', { timeZone: 'Asia/Dhaka' }) : row.datetime;
-        return row;
-    });
 
     const data: IJsonSheet[] = [{
         sheet: "Sell Report",
