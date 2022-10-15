@@ -12,7 +12,7 @@ middleware = Middleware(env)
 
 @app.get('/')
 def home():
-    return 'Hello Satyam', 200
+    return 'Hello Srinjoy', 200
 
 
 @app.post('/login')

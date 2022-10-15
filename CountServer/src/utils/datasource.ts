@@ -1,11 +1,12 @@
 import { DataSource } from "typeorm";
-import { DownloadTokens } from "../entities/DownloadTokens";
+import { AuthDevices } from "../entities/AuthDevices";
+import { AuthTokens } from "../entities/AuthTokens";
 import { KeyValuePairs } from "../entities/KeyValuePairs";
 
 export const AppDataSource = new DataSource({
     type: "sqlite",
     database: "database.sqlite",
-    entities: [KeyValuePairs, DownloadTokens],
+    entities: [KeyValuePairs, AuthDevices, AuthTokens],
     synchronize: true,
     logging: false,
 });

@@ -1,5 +1,8 @@
 import xlsx, { IJsonSheet, ISettings } from "json-as-xlsx";
 import { Client } from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const client = new Client({
     user: process.env.PG_USER,
@@ -60,10 +63,3 @@ export async function genarateSellReport(soldOnly = false) {
     return buffer;
 }
 
-export async function getSellCount() {
-    if (!isPgConnected) {
-        throw new Error("Postgres is not connected");
-    }
-    const res = await client.query('SELECT COUNT(is_sold) FROM sell_info where is_sold=true;')
-    return res.rows[0].count as number;
-}
