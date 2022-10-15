@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Srinjoy T-shirt Editor</string>
     <string name="copyright_text">© Srinjoy</string>
-    <string name="server_url">http://192.168.0.102:65014</string>
+    <string name="server_url">https://api.rag22reboot.ece17.rocks</string>
     <string name="qr_prefix">rag22r:</string>
     <string name="qr_hint">Hover to QR-code</string>
     <string name="title_activity_login">LoginActivity</string>

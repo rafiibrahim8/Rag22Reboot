@@ -81,9 +81,9 @@ class NotificationSender:
             self.__send_discord(self.__admin_hook, text)
 
     def ping_sell_webhook(self):
-        Thread(target=self.__ping_sell_webhook, args=()).start()
+        Thread(target=self.__ping_sell_webhook).start()
 
-    def __ping_sell_webhook(self, data):
+    def __ping_sell_webhook(self):
         try:
             requests.get(self.__sell_webhook, params={'token': self.__sell_webhook_token})
         except:
