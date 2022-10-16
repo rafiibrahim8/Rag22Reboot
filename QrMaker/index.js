@@ -4,7 +4,7 @@ const QRCode = require('qrcode');
 const fs = require('fs');
 const crypto = require('crypto');
 
-const TOTAL_GENARATE = 300;
+const TOTAL_GENARATE = 9000;
 const TEMPLATE_FILE_NAME = 'template0.pdf'
 const PAGE_PER_PDF = 100;
 

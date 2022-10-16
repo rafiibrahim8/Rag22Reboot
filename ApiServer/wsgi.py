@@ -47,7 +47,7 @@ def edit_sell():
 @app.post('/admin_api')
 def handle_admin_api():
     auth_header = f_req.headers.get('Authorization')
-    if not (auth_header and utils.secure_compare(auth_header.lower(), f'bearer {env["api_token"]}')):
+    if not (auth_header and auth_header.lower().startswith('bearer ') and utils.secure_compare(auth_header[7:], env["api_token"])):
         return 'Forbidden!', 403
     if not f_req.get_json():
         return 'Bad Request!', 400
