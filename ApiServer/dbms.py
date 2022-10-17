@@ -116,7 +116,7 @@ class DBMS():
     def get_user(self, username=None, token=None):
         user=None
         if username:
-            user = self.dbSession.query(Users).filter_by(username=username).first()
+            user = self.dbSession.query(Users).filter_by(username=username.lower()).first()
         elif token:
             user = self.dbSession.query(Users).filter_by(token=token).first()
         return user
@@ -139,14 +139,14 @@ class DBMS():
         qr = self.get_qr_by_code(qr_code)
         now_datetime = datetime.now(utils.BDT()).strftime('%Y-%m-%d %H:%M:%S')
         if qr.is_sold: # editing a sell
-            user = self.dbSession.query(Users).filter_by(username=qr.seller).first()
+            user = self.dbSession.query(Users).filter_by(username=qr.seller.lower()).first()
             qr.edits = utils.add_or_append_edits(qr)
             qr.total_edits += 1
             is_new_sell = False
             qr.editor = seller
             user.total_amount -= qr.amount
         else: # new sell
-            user = self.dbSession.query(Users).filter_by(username=seller).first()
+            user = self.dbSession.query(Users).filter_by(username=seller.lower()).first()
             qr.seller = seller
             user.total_sell += 1
             user.last_sell = now_datetime
@@ -174,11 +174,11 @@ class DBMS():
         DBMS.commit_session(self.dbSession)
 
     def update_user(self, username, password, full_name, permission_level, active=True):
-        user = self.dbSession.query(Users).filter_by(username=username).first()
+        user = self.dbSession.query(Users).filter_by(username=username.lower()).first()
         password = self.__password_factory.mk_hashed_pwd(password)
         token = hashlib.sha512(os.urandom(2048)).hexdigest()
         if user is None:
-            self.dbSession.add(Users(username=username, password=password, permission_level=permission_level, full_name=full_name, active=active, token=token))
+            self.dbSession.add(Users(username=username.lower(), password=password, permission_level=permission_level, full_name=full_name, active=active, token=token))
         else:
             user.password = password
             user.full_name = full_name
@@ -187,12 +187,12 @@ class DBMS():
         DBMS.commit_session(self.dbSession)
 
     def refresh_user_token(self, username):
-        user = self.dbSession.query(Users).filter_by(username=username).first()
+        user = self.dbSession.query(Users).filter_by(username=username.lower()).first()
         user.token = hashlib.sha512(os.urandom(2048)).hexdigest()
         DBMS.commit_session(self.dbSession)
     
     def delete_user(self, username):
-        self.dbSession.query(Users).filter_by(username=username).delete()
+        self.dbSession.query(Users).filter_by(username=username.lower()).delete()
         DBMS.commit_session(self.dbSession)
 
     def add_qr_admin(self, qr_plain, **kwargs):
