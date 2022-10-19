@@ -2,8 +2,8 @@ import requests
 import json
 import sys
 
-URL = 'https://gpsd0.ibrahimrafi.me/admin_api'
-URL = 'http://127.0.0.1:65014/admin_api'
+URL = 'https://api.rag22reboot.ece17.rocks/admin_api'
+# URL = 'http://127.0.0.1:65014/admin_api'
 
 class Admin:
     def __init__(self, url):
