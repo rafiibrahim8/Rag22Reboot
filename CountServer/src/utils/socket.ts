@@ -2,7 +2,7 @@ import { Server } from "socket.io"
 import { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { AuthDevices } from "../entities/AuthDevices";
 import { AppDataSource } from "./datasource";
-import { getSellCount } from "./pg-database";
+import { getSellCountAndSum } from "./pg-database";
 
 const parseCookie = (str: string | undefined) => {
     if (!str) return {};
@@ -34,11 +34,10 @@ export function setServer(server: any) {
     });
 
     io.on('connection', async (socket) => {
-        io.emit('count', { count: await getSellCount() });
+        io.emit('info', await getSellCountAndSum());
     });
 }
 
 export async function emitCount() {
-    let count = await getSellCount();
-    io.emit('count', { count });
+    io.emit('info', await getSellCountAndSum());
 }

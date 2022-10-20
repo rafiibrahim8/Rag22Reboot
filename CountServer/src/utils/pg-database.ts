@@ -20,10 +20,13 @@ async function connectDB() {
 
 connectDB();
 
-export async function getSellCount() {
+export async function getSellCountAndSum() {
     if (!isPgConnected) {
         throw new Error("Postgres is not connected");
     }
-    const res = await client.query('SELECT COUNT(is_sold) FROM sell_info where is_sold=true;')
-    return res.rows[0].count as number;
+    const res = await client.query('SELECT count(is_sold), sum(amount) FROM sell_info where is_sold=true;')
+    return {
+        count: res.rows[0].count as number,
+        sum: res.rows[0].sum as number
+    };
 }

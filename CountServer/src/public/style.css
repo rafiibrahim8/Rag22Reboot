@@ -8,6 +8,9 @@
 
 body {
     background: #333 url(https://static.tumblr.com/maopbtg/a5emgtoju/inflicted.png) repeat;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
 
 #margin {
@@ -21,10 +24,8 @@ body {
 }
 
 #wrapper {
-    width: 700px;
     justify-content: center;
     align-items: center;
-    display: flex;
     height: auto;
     margin-left: auto;
     margin-right: auto;
@@ -32,7 +33,7 @@ body {
     margin-bottom: 100px;
 }
 
-#inner {
+.inner {
     display: inline-block;
     align-items: center;
     justify-items: center;
@@ -40,14 +41,22 @@ body {
 }
 
 
-#count {
+.count {
     font-family: 'Fuzzy Bubbles', Courier, monospace;
     font-weight: normal;
-    font-size: 12rem;
     align-self: center;
     color: #FFF;
     text-shadow: 0px 0px 2px #000;
 }
+
+h1{
+    font-size: 12rem;
+}
+
+h2{
+    font-size: 5rem;
+}
+
 
 #subtitle {
     font-family: 'Fuzzy Bubbles', Courier, monospace;

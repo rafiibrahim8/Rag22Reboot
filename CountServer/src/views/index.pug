@@ -7,8 +7,13 @@ html(lang='en')
         meta(name='viewport' content='width=device-width, initial-scale=0.6')
         script(src='https://cdn.socket.io/4.5.0/socket.io.min.js' integrity='sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k' crossorigin='anonymous')
         script(src='/socket.js')
-    #wrapper
-        body
-            #inner
-                p#subtitle Total Sold
-                h1#count Loading...
+    body
+        #wrapper
+            p
+                div(class='inner')
+                    p#subtitle Total Sold
+                    h1#count(class='count') ...
+            p
+                div(class='inner')
+                    p#subtitle Total Amount
+                    h2#sum(class='count') ...
