@@ -43,7 +43,8 @@ class AdminAPI:
             for i in self.__dbms.get_all_undelivered_sms():
                 sms_id, sms_dlvref = i['sms_id'], i['sms_dlvref']
                 res = requests.get('https://sms.solutionsclan.com/api/sms/dlr', params={'dlrRef': sms_dlvref}, headers=headers).json()
-                self.__dbms.mark_as_delevered(sms_id, int(res['report']['status']))
+                status = res['report']['status'] if res['report']['status']!=None else 1007 
+                self.__dbms.mark_as_delevered(sms_id, int(status))
         except:
             self.__notification_sender.send_admin_notif(f'Exception Syncing SMS:\n{format_exc()}')
 
