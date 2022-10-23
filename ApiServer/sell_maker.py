@@ -11,7 +11,7 @@ class SellMaker:
         kwargs['qr_code'] = req.get('qr_text')
         if len(req.get('customer_name').strip()) < 1:
             return False, None
-        kwargs['buyer_name'] = req.get('customer_name').strip()
+        kwargs['buyer_name'] = req.get('customer_name').strip().title()
         try:
             if int(req.get('customer_amount').strip()) < 1:
                 return False, None

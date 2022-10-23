@@ -34,8 +34,8 @@ class EditSell:
 
     def set_info(self, customer_name, customer_phone, customer_amount, qrid, username):
         ## <don't judge me please :p>
-        customer_phone = customer_phone.strip()
-        customer_name = customer_name.strip()[-11:]
+        customer_phone = customer_phone.strip()[-11:]
+        customer_name = customer_name.strip().title()
         customer_amount = customer_amount.strip()
         qrid = qrid.strip()
         ## </don't judge me please :p>
