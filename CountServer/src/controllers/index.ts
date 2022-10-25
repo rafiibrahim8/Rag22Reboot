@@ -23,6 +23,15 @@ const authDevice = async (req: Request, res: Response) => {
     res.cookie('auth', cookie.cookie, { maxAge: COOKIE_MAX_AGE, httpOnly: true }).redirect('/');
 }
 
+const authWithCookie = async (req: Request, res: Response) => {
+    const cookie = await AppDataSource.getRepository(AuthDevices).findOne({ where: { cookie: req.params.cookie } });
+    if (!cookie) {
+        res.status(403).end();
+        return;
+    }
+    res.cookie('auth', cookie.cookie, { maxAge: COOKIE_MAX_AGE, httpOnly: true }).redirect('/');
+}
+
 const newSell = async (req: Request, res: Response) => {
     if(req.query.token !== process.env.PING_TOKEN) {
         res.status(403).end();
@@ -35,5 +44,6 @@ const newSell = async (req: Request, res: Response) => {
 export {
     home,
     authDevice,
+    authWithCookie,
     newSell
 }
