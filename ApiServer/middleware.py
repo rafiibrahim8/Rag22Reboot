@@ -28,6 +28,8 @@ class Middleware:
         user = self.__dbms.get_user(username=username)
         if not user:
             return {'status': 403}, 403
+        if not user.active:
+            return {'status': 403}, 403
         if not self.__password_factory.is_valid_login(user.password, password):
             return {'status': 403}, 403
         return {'seller_token': user.token, 'seller_name': user.full_name}, 200
