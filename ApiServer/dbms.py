@@ -70,6 +70,7 @@ class SMSInfo(Base):
     __tablename__ = 'sms_info'
     sms_id = Column(String, primary_key=True)
     sms_datetime = Column(String)
+    sms_phone_no = Column(String)
     sms_text = Column(String)
     sms_dlvref = Column(String)
     sent_status = Column(Integer)
@@ -95,10 +96,10 @@ class DBMS():
                 print(format_exc())
             time.sleep(interval)
     
-    def update_sms(self, sms_text, sms_dlvref, sent_status=1):
+    def update_sms(self, sms_text, sms_dlvref, phone_no, sent_status=1):
         sms_id = hashlib.sha256(os.urandom(1024)).hexdigest()
         sms_datetime = utils.current_bd_datetime_str()
-        self.dbSession.add(SMSInfo(sms_text=sms_text, sms_dlvref=sms_dlvref, sent_status=sent_status, sms_id=sms_id, sms_datetime=sms_datetime))
+        self.dbSession.add(SMSInfo(sms_text=sms_text, sms_dlvref=sms_dlvref, sent_status=sent_status, sms_id=sms_id, sms_datetime=sms_datetime, sms_phone_no=phone_no))
         DBMS.commit_session(self.dbSession)
 
     def mark_as_delevered(self, sms_id, status=0):

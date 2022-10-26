@@ -1,6 +1,6 @@
 import json
 import requests
-from traceback import print_exc
+from traceback import format_exc, print_exc
 from threading import Thread
 from dbms import DBMS
 
@@ -50,9 +50,9 @@ class NotificationSender:
     def __send_sms_impl_thread_func(self, data):
         try:
             res = requests.post('https://sms.solutionsclan.com/api/sms/send', json=data, headers=self.__sms_api_header).json()
-            self.__dbms.update_sms(data['textBody'], res['dlrRef'])
+            self.__dbms.update_sms(data['textBody'], res['dlrRef'], data['contactNumbers'])
         except:
-            self.send_admin_notif('SMS Sending failed.', False)
+            self.send_admin_notif(f'SMS Sending failed.\n{format_exc()}\n{json.dumps(data)}', False)
 
     def __send_sell_sms_new(self, phone, name, amount):
         text = f"Dear {name},\nThank you for purchasing your t-shirt for BDT {amount}.00. Please bring your t-shirt and receipt on the concert day.\n- Srinjoy '18"
