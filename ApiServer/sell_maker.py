@@ -1,5 +1,8 @@
 import re
+from traceback import format_exc
+
 from dbms import DBMS
+from utils import current_bd_datetime_str
 
 class SellMaker:
     def __init__(self, dbms:DBMS, notification_sender):
@@ -41,11 +44,23 @@ class SellMaker:
         status, kwargs = self.__validate_sell(req)
         if not status:
             return False
-        print(kwargs)
-        is_new = self.__dbms.update_qr_sell(**kwargs)
+        self.log_sell(kwargs)
+        try:
+            is_new = self.__dbms.update_qr_sell(**kwargs)
+        except:
+            self.__notification_sender.send_admin_notif(f'Exception in Selling:\n{format_exc()}\n{self.format_sell_log(kwargs)}')
+            raise
 
         self.__notification_sender.ping_sell_webhook()        
         self.__notification_sender.send_dicord_notif(kwargs['qr_code'].split(':')[2], kwargs['seller'], is_new, kwargs['buyer_phone'], kwargs['buyer_name'], kwargs['amount'])
         self.__notification_sender.send_sell_sms(kwargs['buyer_phone'], kwargs['buyer_name'], kwargs['amount'], is_new, kwargs['qr_code'].split(':')[2])
 
         return True
+
+    @staticmethod
+    def log_sell(kwargs):
+        print(f'Sell [{current_bd_datetime_str()}]: {SellMaker.format_sell_log(kwargs)}')
+
+    @staticmethod
+    def format_sell_log(kwargs):
+        return f"{kwargs['qr_code'].split(':')[-1]} | {kwargs['buyer_name']} | {kwargs['buyer_phone']} | {kwargs['amount']} | {kwargs['seller']}"

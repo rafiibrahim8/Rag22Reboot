@@ -1,4 +1,3 @@
-from datetime import datetime
 import hashlib
 from sqlalchemy import BigInteger, Float, create_engine, func, Integer, String, Column, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -91,15 +90,14 @@ class DBMS():
     def __keep_alive(self, interval=30):
         while True:
             try:
-                res = self.dbSession.execute('SELECT 1').fetchall()
-                print(res)
+                self.dbSession.execute('SELECT 1').fetchall()
             except:
                 print(format_exc())
             time.sleep(interval)
     
     def update_sms(self, sms_text, sms_dlvref, sent_status=1):
         sms_id = hashlib.sha256(os.urandom(1024)).hexdigest()
-        sms_datetime = datetime.now(utils.BDT()).strftime('%Y-%m-%d %H:%M:%S')
+        sms_datetime = utils.current_bd_datetime_str()
         self.dbSession.add(SMSInfo(sms_text=sms_text, sms_dlvref=sms_dlvref, sent_status=sent_status, sms_id=sms_id, sms_datetime=sms_datetime))
         DBMS.commit_session(self.dbSession)
 
@@ -108,6 +106,10 @@ class DBMS():
         if sms:
             sms.sent_status = status
             DBMS.commit_session(self.dbSession)
+        
+    def sms_change_status_bulk(self, status_list:list):
+        self.dbSession.bulk_update_mappings(SMSInfo, status_list)
+        DBMS.commit_session(self.dbSession)
         
     def get_all_undelivered_sms(self):
         sells = self.dbSession.query(SMSInfo).filter(SMSInfo.sent_status > 0).all()
@@ -137,7 +139,7 @@ class DBMS():
     def update_qr_sell(self, qr_code, buyer_name, buyer_phone, amount, seller):
         is_new_sell = True
         qr = self.get_qr_by_code(qr_code)
-        now_datetime = datetime.now(utils.BDT()).strftime('%Y-%m-%d %H:%M:%S')
+        now_datetime = utils.current_bd_datetime_str()
         if qr.is_sold: # editing a sell
             user = self.dbSession.query(Users).filter_by(username=qr.seller.lower()).first()
             qr.edits = utils.add_or_append_edits(qr)

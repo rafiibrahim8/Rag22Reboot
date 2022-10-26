@@ -39,12 +39,15 @@ class AdminAPI:
             balance = float(res['balance'])
             if balance < 75.0:
                 self.__notification_sender.send_admin_notif(f'SMS sender balence is low. Currently have BDT {balance}.')
-
+            
+            status_list = list()
             for i in self.__dbms.get_all_undelivered_sms():
                 sms_id, sms_dlvref = i['sms_id'], i['sms_dlvref']
                 res = requests.get('https://sms.solutionsclan.com/api/sms/dlr', params={'dlrRef': sms_dlvref}, headers=headers).json()
-                status = res['report']['status'] if res['report']['status']!=None else 1007 
-                self.__dbms.mark_as_delevered(sms_id, int(status))
+                status = int(res['report']['status']) if res['report']['status']!=None else 1007
+                status_list.append({'sms_id': sms_id, 'sent_status': status})
+            self.__dbms.sms_change_status_bulk(status_list)
+
         except:
             self.__notification_sender.send_admin_notif(f'Exception Syncing SMS:\n{format_exc()}')
 
@@ -54,7 +57,6 @@ class AdminAPI:
     def __add_qr(self, data):
         qr_plain = data.pop('qr_code')
         self.__dbms.add_qr_admin(qr_plain, **data)
-
 
     def __update_user(self, data):
         self.__dbms.update_user(**data)

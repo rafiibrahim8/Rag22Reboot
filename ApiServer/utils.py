@@ -4,6 +4,14 @@ import hmac
 import json
 import os
 
+class BDT(datetime.tzinfo):
+    def utcoffset(self, dt):
+        return datetime.timedelta(hours=6)
+    def dst(self, dt):
+        return datetime.timedelta(hours=6)
+    def tzname(self, dt):
+        return 'Bangladesh Standard Time'
+
 def sql_all_to_json(objs, sort_by=None):
     if len(objs) < 1:
         return []
@@ -43,10 +51,5 @@ def add_or_append_edits(qr):
     edits.append(new_edit)
     return json.dumps(edits)
 
-class BDT(datetime.tzinfo):
-    def utcoffset(self, dt):
-        return datetime.timedelta(hours=6)
-    def dst(self, dt):
-        return datetime.timedelta(hours=6)
-    def tzname(self, dt):
-        return 'Bangladesh Standard Time'
+def current_bd_datetime_str(format='%Y-%m-%d %H:%M:%S'):
+    return datetime.datetime.now(BDT()).strftime(format)
