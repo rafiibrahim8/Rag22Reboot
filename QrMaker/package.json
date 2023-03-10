@@ -12,6 +12,6 @@
   "dependencies": {
     "cli-progress": "^3.11.2",
     "pdf-lib": "^1.17.1",
-    "qrcode": "^1.5.0"
+    "qrcode": "^1.5.1"
   }
 }
